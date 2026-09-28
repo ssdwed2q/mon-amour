@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour toi... ✨</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, #fff0f3 0%, #ffccd5 100%);
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            perspective: 1200px;
+        }
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .heart {
+            position: absolute;
+            background-color: rgba(255, 71, 87, 0.4);
+            display: inline-block;
+            height: 20px;
+            margin: 0 10px;
+            position: relative;
+            transform: rotate(-45deg);
+            width: 20px;
+            animation: float 6s linear infinite;
+        }
+        .heart:before, .heart:after {
+            content: "";
+            background-color: rgba(255, 71, 87, 0.4);
+            border-radius: 50%;
+            height: 20px;
+            position: absolute;
+            width: 20px;
+        }
+        .heart:before { top: -10px; left: 0; }
+        .heart:after { left: 10px; top: 0; }
+        @keyframes float {
+            0% { transform: translateY(105vh) rotate(-45deg) scale(0.4); opacity: 0; }
+            15% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(-45deg) scale(1.2); opacity: 0; }
+        }
+        .container {
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px 20px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(255, 75, 92, 0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            margin: 20px;
+        }
+        .carousel-container {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            margin: 20px auto;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .carousel {
+            width: 110px;
+            height: 150px;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: rotateCarousel 20s linear infinite;
+        }
+        .carousel-item {
+            position: absolute;
+            width: 110px;
+            height: 150px;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 4px solid #fff;
+            box-sizing: border-box;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel-item:nth-child(1) { transform: rotateY(0deg) translateZ(160px); }
+        .carousel-item:nth-child(2) { transform: rotateY(36deg) translateZ(160px); }
+        .carousel-item:nth-child(3) { transform: rotateY(72deg) translateZ(160px); }
+        .carousel-item:nth-child(4) { transform: rotateY(108deg) translateZ(160px); }
+        .carousel-item:nth-child(5) { transform: rotateY(144deg) translateZ(160px); }
+        .carousel-item:nth-child(6) { transform: rotateY(180deg) translateZ(160px); }
+        .carousel-item:nth-child(7) { transform: rotateY(216deg) translateZ(160px); }
+        .carousel-item:nth-child(8) { transform: rotateY(252deg) translateZ(160px); }
+        .carousel-item:nth-child(9) { transform: rotateY(288deg) translateZ(160px); }
+        .carousel-item:nth-child(10) { transform: rotateY(324deg) translateZ(160px); }
+        @keyframes rotateCarousel {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        .confession-text {
+            font-size: 1.15rem;
+            color: #2d3436;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            min-height: 130px;
+            font-style: italic;
+        }
+        .question {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: #d63031;
+            margin-top: 20px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .question.show { opacity: 1; transform: scale(1); }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 25px;
+            height: 70px;
+            position: relative;
+        }
+        .btn {
+            padding: 12px 26px;
+            font-size: 1.05rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        #btn-yes {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            color: white;
+            display: none;
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+        }
+        #btn-yes:hover { transform: scale(1.1); }
+        #btn-no {
+            background-color: #a4b0be;
+            color: white;
+            display: none;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="hearts-box"></div>
+    <div class="container">
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-item"><img src="1.jpg"></div>
+                <div class="carousel-item"><img src="2.jpg"></div>
+                <div class="carousel-item"><img src="3.jpg"></div>
+                <div class="carousel-item"><img src="4.jpg"></div>
+                <div class="carousel-item"><img src="5.jpg"></div>
+                <div class="carousel-item"><img src="6.jpg"></div>
+                <div class="carousel-item"><img src="7.jpg"></div>
+                <div class="carousel-item"><img src="8.jpg"></div>
+                <div class="carousel-item"><img src="9.jpg"></div>
+                <div class="carousel-item"><img src="10.jpg"></div>
+            </div>
+        </div>
+        <div class="confession-text" id="text-box"></div>
+        <div class="question" id="question-box">Est-ce que tu aimerais devenir ma petite amie? 💖</div>
+        <div class="buttons">
+            <button class="btn" id="btn-yes">Oui, bien sûr! 😍</button>
+            <button class="btn" id="btn-no">Non 😢</button>
+        </div>
+    </div>
+    <script>
+        const heartsBox = document.getElementById('hearts-box');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 4) + 's';
+            heart.style.transform = `rotate(-45deg) scale(${Math.random() * 0.4 + 0.5})`;
+            heartsBox.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 350);
+
+        const text = "Depuis que je te connais, ma vie a changé. \\nMes sentiments pour toi grandissent chaque jour\\net je ne peux plus les cacher.\\n\\nJe t'aime, profondément.";
+        const textBox = document.getElementById('text-box');
+        let index = 0;
+
+        function typeWriter() {
+            if (index < text.length) {
+                if (text.substring(index, index + 2) === '\\n') {
+                    textBox.innerHTML += '<br>'; index += 2;
+                } else {
+                    textBox.innerHTML += text.charAt(index); index++;
+                }
+                setTimeout(typeWriter, 60);
+            } else {
+                document.getElementById('question-box').classList.add('show');
+                document.getElementById('btn-yes').style.display = 'block';
+                const btnNo = document.getElementById('btn-no');
+                btnNo.style.display = 'block';
+                btnNo.style.left = '65%'; btnNo.style.top = '15px';
+            }
+        }
+        setTimeout(typeWriter, 1200);
+
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        btnYes.addEventListener('click', () => { alert("💖 Merci d'avoir dit OUI! Je t'aime à la folie! 🥰🎉"); });
+
+        function moveNoButton(e) {
+            if(e) e.preventDefault();
+            const container = document.querySelector('.buttons');
+            const newX = Math.random() * (container.clientWidth - btnNo.clientWidth);
+            const newY = (Math.random() * 80) - 40; 
+            btnNo.style.left = newX + 'px'; btnNo.style.top = newY + 'px';
+        }
+        btnNo.addEventListener('mouseenter', moveNoButton);
+        btnNo.addEventListener('touchstart', moveNoButton, {passive: false});
+    </script>
+</body>
+</html>
